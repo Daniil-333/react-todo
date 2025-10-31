@@ -1,24 +1,26 @@
-import ApiError from "../error/ApiError.js";
-import {User} from "../models/models.js";
+import ApiError from "../error/ApiError.ts";
+import {User} from "../models/models.ts";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import {RequestHandler} from "express";
+import {/*IUser,*/ type JWTProps} from "../const/types.ts";
 
-const generateJWT = (id, login, role, fullName) => {
+const generateJWT: JWTProps = (id, login, role, fullName) => {
     return jwt.sign(
         {id, login, role, fullName},
-        process.env.SECRET_KEY,
+        process.env.SECRET_KEY as string,
         {expiresIn: '24h'}
     );
 }
 
-const createFullName = (user) => {
+const createFullName = (user: User) => {
     return (!user.name && !user.surname && !user.patron) ?
         `Неизвестный пользователь id ${user.id}` :
         `${user.surname} ${user.name} ${user.patron}`;
 }
 
 class AuthController {
-    async registration(req, res, next) {
+    registration: RequestHandler = async (req, res, next)=> {
         const { login, password, role } = req.body;
 
         if(!login || !password) {
@@ -44,7 +46,7 @@ class AuthController {
         return res.json({token})
     }
 
-    async login(req, res, next) {
+    login: RequestHandler = async (req, res, next) => {
         const { login, password } = req.body;
         const user = await User.findOne({where: {login}});
         if(!user) {
@@ -67,7 +69,7 @@ class AuthController {
         return res.json({token})
     }
 
-    async check(req, res, next) {
+    check: RequestHandler = async (req, res, next) => {
         const token = generateJWT(
             req.user.id,
             req.user.login,

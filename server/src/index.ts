@@ -1,10 +1,9 @@
-import {configDotenv} from "dotenv";
 import express from "express";
+import {configDotenv} from "dotenv";
 import sequelize from "./db/db.js";
-// import "./models/models.js";
-import {AddSuperUser} from "./seeders/AddSeeders.js";
+import {AddSuperUser, AddTasks} from "./seeders/AddSeeders.js";
 import cors from "cors";
-import router from "./routes/index.js";
+import router from "./routes/index";
 import ErrorHandlerMiddleware from "./middleware/ErrorHandlerMiddleware.js";
 
 configDotenv();
@@ -30,6 +29,7 @@ const start = async () => {
 
         await sequelize.sync(); //{force: true}
         await AddSuperUser();
+        await AddTasks();
         // console.log('✅ All models synchronized');
 
         app.listen(PORT, () => {

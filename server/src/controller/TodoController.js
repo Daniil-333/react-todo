@@ -1,5 +1,5 @@
-import {Task, User} from "../models/models.js";
-import ApiError from "../error/ApiError.js";
+import {Task, User} from "../models/models.ts";
+import ApiError from "../error/ApiError.ts";
 
 class TodoController {
     async create(req, res, next) {

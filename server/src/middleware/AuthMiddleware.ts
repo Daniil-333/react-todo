@@ -12,7 +12,7 @@ export default function (req, res, next) {
             res.status(401).json({message: 'Не авторизован'});
         }
 
-        req.user = jwt.verify(token, process.env.SECRET_KEY);
+        req.user = jwt.verify(token, process.env.SECRET_KEY as string);
 
         next();
     }catch (e) {

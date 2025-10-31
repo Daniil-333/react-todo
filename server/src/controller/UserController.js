@@ -1,5 +1,5 @@
-import ApiError from "../error/ApiError.js";
-import {User} from "../models/models.js";
+import ApiError from "../error/ApiError.ts";
+import {User} from "../models/models.ts";
 
 class UserController {
     async getAll(req, res, next) {
