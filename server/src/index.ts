@@ -1,10 +1,10 @@
 import express from "express";
 import {configDotenv} from "dotenv";
-import sequelize from "./db/db.js";
-import {AddSuperUser, AddTasks} from "./seeders/AddSeeders.js";
+import sequelize from "./db/db.ts";
+import {AddSuperUser, AddTasks} from "./seeders/AddSeeders.ts";
 import cors from "cors";
-import router from "./routes/index";
-import ErrorHandlerMiddleware from "./middleware/ErrorHandlerMiddleware.js";
+import router from "./routes/index.ts";
+import ErrorHandlerMiddleware from "./middleware/ErrorHandlerMiddleware.ts";
 
 configDotenv();
 

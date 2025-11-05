@@ -1,8 +1,10 @@
 import {Task, User} from "../models/models.ts";
 import ApiError from "../error/ApiError.ts";
+import {RequestHandler} from "express";
 
+//TODO типизировать Task модель
 class TodoController {
-    async create(req, res, next) {
+    create: RequestHandler = async (req, res, next) => {
         let {
             title,
             description,
@@ -17,14 +19,14 @@ class TodoController {
             return next(ApiError.badRequest("Поля 'Заголовок', 'Описание', 'Дата окончания', 'Приоритет', 'Статус' 'Создатель', 'Ответственный' обязательны к заполнению"));
         }
 
-        const data = {title, description, end_at, creator_id: user.id, executor_id};
+        const data = {title, description, end_at, creator_id: user.id, executor_id} as Task;
 
         const task = await Task.create(data)
 
         return res.json(task)
     }
 
-    async update(req, res, next) {
+    update: RequestHandler = async (req, res, next)=>  {
         const {id} = req.params;
         const task = await Task.findByPk(id);
 
@@ -37,7 +39,7 @@ class TodoController {
         return res.json(task);
     }
 
-    async getAll(req, res) {
+    getAll: RequestHandler = async (req, res) => {
         const items = await Task.findAll({
             include: [{
                 model: User,
@@ -49,7 +51,7 @@ class TodoController {
         return res.json(items);
     }
 
-    async getOne(req, res, next) {
+    getOne: RequestHandler = async (req, res, next) => {
         const {id} = req.params;
         const item = await Task.findByPk(id);
 

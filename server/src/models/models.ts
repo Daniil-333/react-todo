@@ -1,33 +1,12 @@
 import sequelize from "../db/db.ts";
 import {
     DataTypes,
-    Model,
-    InferAttributes,
-    InferCreationAttributes,
-    CreationOptional,
 } from "sequelize";
+import {priorityOptions} from "../const/types/priority.ts";
+import {statusOptions} from "../const/types/status.ts";
+import {roleOptions} from "../const/types/role.ts";
+import {User, Task} from '../const/classes.ts';
 
-const PriorityVariant = ['low', 'medium', 'high']
-
-const TodoStatus = ['created', 'progress', 'complete', 'cancel']
-
-class User extends Model<
-    InferAttributes<User, { omit: 'fullName' }>,
-    InferCreationAttributes<User, { omit: 'fullName' }>
-> {
-    declare id: CreationOptional<number>;
-    declare login: string;
-    declare password: string;
-    declare name: CreationOptional<string | null>;
-    declare surname: CreationOptional<string | null>;
-    declare patron: CreationOptional<string | null>;
-    declare role: CreationOptional<string>;
-    declare supervisor: CreationOptional<number | null>;
-
-    get fullName(): string {
-        return [this.surname, this.name, this.patron].filter(Boolean).join(' ') || this.login;
-    }
-}
 
 User.init({
         id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -36,7 +15,7 @@ User.init({
         name: {type: DataTypes.STRING},
         surname: {type: DataTypes.STRING},
         patron: {type: DataTypes.STRING, comment: 'Отчество'},
-        role: {type: DataTypes.STRING, defaultValue: 'USER', comment: 'Роль'},
+        role: {type: DataTypes.ENUM(...roleOptions), defaultValue: roleOptions[1], comment: 'Роль'},
         supervisor: {type: DataTypes.INTEGER, allowNull: true, comment: 'Руководитель (пользователь)'},
     }, {
         sequelize,
@@ -45,20 +24,25 @@ User.init({
     }
 );
 
-export const Task = sequelize.define("task", {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    title: {type: DataTypes.STRING, allowNull: false, comment: 'Заголовок'}, // Заголовок
-    description: {type: DataTypes.TEXT, allowNull: false, comment: 'Описание'}, // Описание
-    end_at: {type: DataTypes.DATE, allowNull: false, comment: 'Дата окончания'}, // Дата окончания
-    priority: {type: DataTypes.ENUM(...PriorityVariant), defaultValue:  PriorityVariant[0], allowNull: false, comment: 'Приоритет'}, // Приоритет
-    status: {type: DataTypes.ENUM(...TodoStatus), defaultValue: TodoStatus[0], allowNull: false, comment: 'Статус'}, // Статус
-    creator_id: {type: DataTypes.INTEGER, allowNull: false, comment: 'Создатель'}, // Создатель
-    executor_id: {type: DataTypes.INTEGER, allowNull: false, comment: 'Ответственный'}, // Ответственный
-})
+Task.init({
+        id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+        title: {type: DataTypes.STRING, allowNull: false, comment: 'Заголовок'}, // Заголовок
+        description: {type: DataTypes.TEXT, allowNull: false, comment: 'Описание'}, // Описание
+        end_at: {type: DataTypes.DATE, allowNull: false, comment: 'Дата окончания'}, // Дата окончания
+        priority: {type: DataTypes.ENUM(...priorityOptions), defaultValue:  priorityOptions[0], allowNull: false, comment: 'Приоритет'}, // Приоритет
+        status: {type: DataTypes.ENUM(...statusOptions), defaultValue: statusOptions[0], allowNull: false, comment: 'Статус'}, // Статус
+        creator_id: {type: DataTypes.INTEGER, allowNull: false, comment: 'Создатель'}, // Создатель
+        executor_id: {type: DataTypes.INTEGER, allowNull: false, comment: 'Ответственный'}, // Ответственный
+    }, {
+        sequelize,
+        modelName: 'task',
+        tableName: 'tasks'
+    }
+);
 
 User.hasMany(Task, {foreignKey: "creator_id", as: 'createdTasks'})
 User.hasMany(Task, {foreignKey: "executor_id", as: 'assignedTasks'})
 Task.belongsTo(User, {foreignKey: "creator_id", as: 'creator'})
 Task.belongsTo(User, {foreignKey: "executor_id", as: 'executor'})
 
-export {User};
+export {User, Task}

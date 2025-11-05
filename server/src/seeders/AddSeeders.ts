@@ -1,7 +1,11 @@
 import {faker} from "@faker-js/faker";
 import {Task, User} from "../models/models.ts";
 import bcrypt from "bcrypt";
-import {PriorityVariant, TaskStatus, Role} from '../const/enums.ts';
+import {Status, StatusType} from "../const/types/status.ts";
+import {Priority, PriorityType} from "../const/types/priority.ts";
+import {Role, RoleType} from "../const/types/role.ts";
+import {InferCreationAttributes} from "sequelize";
+
 
 const AddSuperUser = async () => {
     const hashPassword = await bcrypt.hash('qwerty654321', 5);
@@ -19,16 +23,16 @@ const AddSuperUser = async () => {
         });
     }
 
-    const dummyData = [];
+    const dummyData: InferCreationAttributes<User>[] = [];
     for(let i = 0 ; i < 10 ; i++) {
         const hashPassword = await bcrypt.hash(faker.internet.password(), 5);
         dummyData.push({
-            login: faker.name.firstName(),
+            login: faker.name.email(),
             password: hashPassword,
             name: faker.name.firstName(),
             surname: faker.name.lastName(),
-            patron: faker.name.title(),
-            role: faker.helpers.enumValue(Role),
+            patron: faker.name.middleName(),
+            role: faker.helpers.enumValue(Role) as RoleType,
         });
     }
 
@@ -36,17 +40,17 @@ const AddSuperUser = async () => {
 }
 
 const AddTasks = async () => {
-    const dummyData = [];
+    const dummyData: InferCreationAttributes<Task>[] = [];
 
     for(let i = 0 ; i < 10 ; i++) {
         dummyData.push({
             title: faker.name.jobTitle(),
             description: faker.lorem.sentences(10),
             end_at: faker.date.future(), //TODO здесь past or future or today
-            priority: faker.helpers.enumValue(PriorityVariant),
-            status: faker.helpers.enumValue(TaskStatus),
-            creator_id: '',
-            executor_id: '',
+            priority: faker.helpers.enumValue(Priority) as PriorityType,
+            status: faker.helpers.enumValue(Status) as StatusType,
+            creator_id: '', //TODO здесь любой ID из Users
+            executor_id: '', //TODO здесь любой ID из Users
         });
     }
 
@@ -58,9 +62,9 @@ export {
     AddTasks,
 }
 
-async function createTask(dummyData) {
+async function createTask(dummyData: InferCreationAttributes<Task>[]) {
     await Task.bulkCreate(dummyData);
 }
-async function createUser(dummyData) {
+async function createUser(dummyData: InferCreationAttributes<User>[]) {
     await User.bulkCreate(dummyData);
 }
