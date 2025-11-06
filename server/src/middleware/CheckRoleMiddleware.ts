@@ -1,21 +1,24 @@
 import jwt from "jsonwebtoken";
+import {Request, Response, NextFunction} from "express";
+import {RoleType} from "../const/types/role.js";
 
-export default function (role) {
-    return function (req, res, next) {
+export default function (role: RoleType) {
+    return function (req: Request, res: Response, next: NextFunction) {
         if(req.method === "OPTIONS") {
-            next()
+            next();
+            return;
         }
 
         try {
-            const token = req.headers.authorization.split(' ')[1];
+            const token = req?.headers?.authorization?.split(' ')[1];
 
             if(!token) {
                 return res.status(401).json({message: 'Не авторизован'});
             }
 
-            const decoded = jwt.verify(token, process.env.SECRET_KEY);
+            const decoded = jwt.verify(token, process.env.SECRET_KEY as string);
 
-            if(decoded.role !== role) {
+            if(typeof decoded !== 'string' && decoded.role !== role) {
                 return res.status(403).json({message: 'Нет доступа'});
             }
 

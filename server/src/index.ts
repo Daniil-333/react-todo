@@ -1,9 +1,8 @@
-import {configDotenv} from "dotenv";
 import express from "express";
-import sequelize from "./db/db.js";
-// import "./models/models.js";
-import {AddSuperUser} from "./seeders/AddSeeders.js";
+import {configDotenv} from "dotenv";
 import cors from "cors";
+import sequelize from "./db/db.js";
+import {MigrateData} from "./seeders/AddSeeders.js";
 import router from "./routes/index.js";
 import ErrorHandlerMiddleware from "./middleware/ErrorHandlerMiddleware.js";
 
@@ -18,9 +17,6 @@ app.use('/api', router);
 
 app.use(ErrorHandlerMiddleware);
 
-
-console.log(AddSuperUser)
-
 const start = async () => {
     try {
         await sequelize.authenticate();
@@ -29,7 +25,8 @@ const start = async () => {
         // console.log('📊 Registered models:', Object.keys(sequelize.models));
 
         await sequelize.sync(); //{force: true}
-        await AddSuperUser();
+        // эмуляция миграций
+        await MigrateData();
         // console.log('✅ All models synchronized');
 
         app.listen(PORT, () => {

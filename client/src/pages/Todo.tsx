@@ -41,15 +41,15 @@ const Todo: FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const [tasksData, usersData] = await Promise.all([
-                fetchTasks(),
-                fetchUsers()
+            const [usersData, tasksData] = await Promise.all([
+                fetchUsers(),
+                fetchTasks()
             ]);
-            setTasks(tasksData);
             setUsers(usersData);
+            setTasks(tasksData);
         };
         fetchData();
-    }, [setTasks, setUsers]);
+    }, [setUsers, setTasks]);
 
     useEffect(() => {
         if (users.length > 0 && Object.keys(visibleGroupsExecutor).length === 0) {

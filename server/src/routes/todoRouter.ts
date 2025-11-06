@@ -1,8 +1,8 @@
-import Router from 'express';
+import {Router} from 'express';
 import TodoController from "../controller/TodoController.js";
 import CheckRoleMiddleware from "../middleware/CheckRoleMiddleware.js";
 
-const router = new Router();
+const router = Router();
 
 router.get('/', TodoController.getAll);
 router.get('/:id', TodoController.getOne);

@@ -1,8 +1,8 @@
-import Router from 'express';
+import {Router} from 'express';
 import UserController from '../controller/UserController.js';
 import AuthMiddleware from '../middleware/AuthMiddleware.js';
 
-const router = new Router();
+const router = Router();
 
 router.get('/', AuthMiddleware, UserController.getAll);
 

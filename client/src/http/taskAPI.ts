@@ -51,4 +51,5 @@ export const fetchTasks = async (): Promise<TaskType[]> => {
             throw new Error(error.response?.data?.message || 'Ошибка получения списка задач');
         }
         throw new Error('Ошибка получения списка задач');
-    }}
+    }
+}
