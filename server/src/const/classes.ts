@@ -4,9 +4,10 @@ import {
     InferCreationAttributes,
     CreationOptional,
 } from "sequelize";
-import {PriorityType} from "./types/priority.ts";
-import {StatusType} from "./types/status.ts";
-import {RoleType} from "./types/role.ts";
+import {PriorityType} from "./types/priority.js";
+import {StatusType} from "./types/status.js";
+import {RoleType} from "./types/role.js";
+import {ExecutorType} from "./interfaces.js";
 
 class User extends Model<
     InferAttributes<User, { omit: 'fullName' }>,
@@ -38,6 +39,7 @@ class Task extends Model<
     declare status: StatusType;
     declare creator_id: number;
     declare executor_id: number;
+    declare executor?: CreationOptional<ExecutorType>;
 }
 
 

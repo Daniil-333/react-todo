@@ -1,11 +1,11 @@
-import sequelize from "../db/db.ts";
+import sequelize from "../db/db.js";
 import {
     DataTypes,
 } from "sequelize";
-import {priorityOptions} from "../const/types/priority.ts";
-import {statusOptions} from "../const/types/status.ts";
-import {roleOptions} from "../const/types/role.ts";
-import {User, Task} from '../const/classes.ts';
+import {priorityOptions} from "../const/types/priority.js";
+import {statusOptions} from "../const/types/status.js";
+import {roleOptions} from "../const/types/role.js";
+import {User, Task} from '../const/classes.js';
 
 
 User.init({
@@ -20,7 +20,12 @@ User.init({
     }, {
         sequelize,
         modelName: 'user',
-        tableName: 'users'
+        tableName: 'users',
+        getterMethods: {
+            fullName() {
+                return [this.surname, this.name, this.patron].filter(Boolean).join(' ') || this.login;
+            }
+        }
     }
 );
 

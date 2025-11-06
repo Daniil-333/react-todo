@@ -1,6 +1,6 @@
 import {Router} from 'express';
-import TodoController from "../controller/TodoController.ts";
-import CheckRoleMiddleware from "../middleware/CheckRoleMiddleware.ts";
+import TodoController from "../controller/TodoController.js";
+import CheckRoleMiddleware from "../middleware/CheckRoleMiddleware.js";
 
 const router = Router();
 

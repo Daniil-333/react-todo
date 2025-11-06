@@ -1,13 +1,13 @@
 import {faker} from "@faker-js/faker";
-import {Task, User} from "../models/models.ts";
 import bcrypt from "bcrypt";
-import {Status, StatusType} from "../const/types/status.ts";
-import {Priority, PriorityType} from "../const/types/priority.ts";
-import {Role, RoleType} from "../const/types/role.ts";
 import {InferCreationAttributes} from "sequelize";
+import {Task, User} from "../models/models.js";
+import {Status, StatusType} from "../const/types/status.js";
+import {Priority, PriorityType} from "../const/types/priority.js";
+import {Role, RoleType} from "../const/types/role.js";
 
 
-const AddSuperUser = async () => {
+const AddUsers = async () => {
     const hashPassword = await bcrypt.hash('qwerty654321', 5);
 
     const superUser = await User.findOne({where: {login: 'owner@test.ru'}});
@@ -23,16 +23,16 @@ const AddSuperUser = async () => {
         });
     }
 
-    const dummyData: InferCreationAttributes<User>[] = [];
-    for(let i = 0 ; i < 10 ; i++) {
+    const dummyData: InferCreationAttributes<User, { omit: 'fullName' | 'id' }>[] = [];
+    for(let i = 0 ; i < 50 ; i++) {
         const hashPassword = await bcrypt.hash(faker.internet.password(), 5);
         dummyData.push({
-            login: faker.name.email(),
+            login: faker.internet.email(),
             password: hashPassword,
-            name: faker.name.firstName(),
-            surname: faker.name.lastName(),
-            patron: faker.name.middleName(),
+            name: faker.person.firstName(),
+            surname: faker.person.lastName(),
             role: faker.helpers.enumValue(Role) as RoleType,
+            patron: faker.person.middleName(),
         });
     }
 
@@ -40,31 +40,48 @@ const AddSuperUser = async () => {
 }
 
 const AddTasks = async () => {
-    const dummyData: InferCreationAttributes<Task>[] = [];
+    const dummyData: InferCreationAttributes<Task, { omit: 'id' }>[] = [];
+    const usersObj = await User.findAll();
+    const users: number[] = usersObj
+        .filter(user => user.id !== null && user.id !== undefined)
+        .map(user => user.id as number);
 
-    for(let i = 0 ; i < 10 ; i++) {
+    for(let i = 0 ; i < 100 ; i++) {
+        const endDate = [faker.date.future(), faker.date.past(), faker.date.soon({days: 1})];
         dummyData.push({
-            title: faker.name.jobTitle(),
+            title: faker.person.jobTitle(),
             description: faker.lorem.sentences(10),
-            end_at: faker.date.future(), //TODO здесь past or future or today
+            end_at: faker.helpers.arrayElement(endDate),
             priority: faker.helpers.enumValue(Priority) as PriorityType,
             status: faker.helpers.enumValue(Status) as StatusType,
-            creator_id: '', //TODO здесь любой ID из Users
-            executor_id: '', //TODO здесь любой ID из Users
+            creator_id: faker.helpers.arrayElement(users),
+            executor_id: faker.helpers.arrayElement(users),
         });
     }
 
     await createTask(dummyData);
 }
 
-export {
-    AddSuperUser,
-    AddTasks,
+const MigrateData = async () => {
+    const users = await getUsers();
+
+    if(users.length >= 51) return;
+
+    await AddUsers();
+    await AddTasks();
 }
 
-async function createTask(dummyData: InferCreationAttributes<Task>[]) {
+export {
+    MigrateData
+}
+
+async function createTask(dummyData: InferCreationAttributes<Task, { omit: 'id' }>[]) {
     await Task.bulkCreate(dummyData);
 }
-async function createUser(dummyData: InferCreationAttributes<User>[]) {
+async function createUser(dummyData: InferCreationAttributes<User, { omit: 'fullName' | 'id' }>[]) {
     await User.bulkCreate(dummyData);
+}
+
+async function getUsers() {
+    return await User.findAll();
 }

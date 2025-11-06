@@ -1,7 +1,7 @@
 import {Router} from 'express';
-import authRouter from "./authRouter.ts";
-import userRouter from "./userRouter.ts";
-import todoRouter from "./todoRouter.ts";
+import authRouter from "./authRouter.js";
+import userRouter from "./userRouter.js";
+import todoRouter from "./todoRouter.js";
 
 const router = Router();
 

@@ -3,6 +3,9 @@
      "rootDir": "./src",
      "outDir": "./dist",
      "baseUrl": "./",
+     "paths": {
+       "@/*": ["*"]
+     },
 
     "module": "nodenext", //ESNext
     "target": "es2022",
@@ -14,7 +17,7 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-
+    
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
 
@@ -25,7 +28,8 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
-    "allowImportingTsExtensions": true,
+    "allowImportingTsExtensions": false,
+    "noEmit": false,
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,

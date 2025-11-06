@@ -1,9 +1,9 @@
-import ApiError from "../error/ApiError.ts";
-import {User as UserModel} from "../models/models.ts";
+import {Request, Response, NextFunction, RequestHandler} from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import {Request, Response, NextFunction, RequestHandler} from "express";
-import {type JWTProps} from "../const/types.ts";
+import ApiError from "../error/ApiError.js";
+import {User as UserModel} from "../models/models.js";
+import {type JWTProps} from "../const/types.js";
 
 
 const generateJWT: JWTProps = (id, login, role, fullName) => {

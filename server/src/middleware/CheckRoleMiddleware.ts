@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import {RoleType} from "../const/types/role.ts";
 import {Request, Response, NextFunction} from "express";
+import {RoleType} from "../const/types/role.js";
 
 export default function (role: RoleType) {
     return function (req: Request, res: Response, next: NextFunction) {

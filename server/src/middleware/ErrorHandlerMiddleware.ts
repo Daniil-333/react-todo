@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from "express";
-import ApiError from '../error/ApiError.ts';
+import ApiError from '../error/ApiError.js';
 
 export default function (err: Error, req: Request, res: Response, next: NextFunction) {
     if (err instanceof ApiError) {

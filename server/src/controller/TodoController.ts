@@ -1,8 +1,8 @@
-import {Task, User} from "../models/models.ts";
-import ApiError from "../error/ApiError.ts";
 import {RequestHandler} from "express";
+import {Task, User} from "../models/models.js";
+import ApiError from "../error/ApiError.js";
 
-//TODO типизировать Task модель
+
 class TodoController {
     create: RequestHandler = async (req, res, next) => {
         let {
@@ -44,11 +44,24 @@ class TodoController {
             include: [{
                 model: User,
                 as: "executor",
-                attributes: ['id', 'login', 'name', 'surname', 'patron' ,'fullName']
+                attributes: ['id', 'login', 'name', 'surname', 'patron']
             }],
             order: [['end_at', 'ASC']],
         });
-        return res.json(items);
+
+        const result = items.map(task => {
+            const taskData = task.toJSON();
+            if (taskData.executor) {
+                taskData.executor.fullName = [
+                    taskData.executor.surname,
+                    taskData.executor.name,
+                    taskData.executor.patron
+                ].filter(Boolean).join(' ') as string || taskData.executor.login;
+            }
+            return taskData;
+        });
+
+        return res.json(result);
     }
 
     getOne: RequestHandler = async (req, res, next) => {

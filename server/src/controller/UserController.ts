@@ -1,5 +1,5 @@
-import {User} from "../models/models.ts";
 import {RequestHandler} from "express";
+import {User} from "../models/models.js";
 
 class UserController {
     getAll: RequestHandler = async (req, res, next) => {
