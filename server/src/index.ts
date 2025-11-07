@@ -1,7 +1,7 @@
 import express from "express";
 import {configDotenv} from "dotenv";
 import cors from "cors";
-import sequelize from "./db/db.js";
+import sequelize, {initializeDatabase} from "./db/index.js";
 import {MigrateData} from "./seeders/AddSeeders.js";
 import router from "./routes/index.js";
 import ErrorHandlerMiddleware from "./middleware/ErrorHandlerMiddleware.js";
@@ -19,15 +19,9 @@ app.use(ErrorHandlerMiddleware);
 
 const start = async () => {
     try {
-        await sequelize.authenticate();
-
-        // Проверяем, какие модели зарегистрированы
-        // console.log('📊 Registered models:', Object.keys(sequelize.models));
-
-        await sequelize.sync(); //{force: true}
+        await initializeDatabase();
         // эмуляция миграций
         await MigrateData();
-        // console.log('✅ All models synchronized');
 
         app.listen(PORT, () => {
             console.log(`Server is running on http://localhost:${PORT}`);
