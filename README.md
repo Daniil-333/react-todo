@@ -1,19 +1,39 @@
-# Welcome to React Todo List!
+# TODO лист (тестовое задание)
 
-## Getting Started
+## <Стек: React - TypeScript - Zustand - Node.js>
 
-### Installation
 
-Install the dependencies:
+### Запуск сервера
 
+1. Переходим в папку
+```bash
+cd server
+```
+2. Копируем файл .env-example в .env. Прописываем порт то же, что на сервере и остальные параметры для подключения к БД. В качестве SECRET_KEY рандомный набор символов.
+
+3. Устанавливаем зависимости:
 ```bash
 npm install
 ```
+4. Запуск сборки
+```bash
+npm run build
+```
 
-## Building for Production
 
-Create a production build:
+### Запуск клиентской части
 
+1. Переходим в папку
+```bash
+cd client
+```
+
+2. Копируем файл .env-example в .env. Прописываем порт и хост.
+3. Устанавливаем зависимости:
+```bash
+npm install
+```
+4. Запуск сборки
 ```bash
 npm run build
 ```

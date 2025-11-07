@@ -19,7 +19,7 @@ function App() {
                     setIsAuth(true);
                 }
                 else {
-                    setUser({});
+                    setUser(null);
                     setIsAuth(false);
                 }
         })

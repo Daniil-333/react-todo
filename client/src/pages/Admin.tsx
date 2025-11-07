@@ -1,7 +1,7 @@
 import type {FC} from 'react';
 import Container from '@mui/material/Container';
 import {useAuth} from "../store/authStore";
-import TaskForm from "../components/TaskForm.tsx";
+// import TaskForm from "../components/TaskForm.tsx";
 
 const Admin: FC = () => {
     const authUser = useAuth();
@@ -17,7 +17,7 @@ const Admin: FC = () => {
         }}>
             <h1 style={{ textAlign: "center"}}>Создать задачу</h1>
 
-            <TaskForm />
+            {/*<TaskForm />*/}
 
         </Container>
     );
