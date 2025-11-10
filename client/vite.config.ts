@@ -21,5 +21,10 @@ export default defineConfig(({mode}) => {
                 } : undefined,
             }),
         ],
+        build: {
+            target: 'esnext',
+            minify: 'esbuild',
+            sourcemap: false
+        }
     }
 })
