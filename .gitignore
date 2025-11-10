@@ -12,4 +12,6 @@ index.html
 assets/
 /client/package-lock.json
 /server/package-lock.json
+/server/dist
+/client/dist
 .htaccess
