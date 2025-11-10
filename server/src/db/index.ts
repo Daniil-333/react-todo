@@ -1,5 +1,4 @@
 import {getSequelize} from './config/index.js';
-// import {Sequelize} from "sequelize";
 
 const sequelize = getSequelize();
 

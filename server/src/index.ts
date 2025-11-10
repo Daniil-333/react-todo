@@ -6,10 +6,7 @@ import {MigrateData} from "./seeders/AddSeeders.js";
 import router from "./routes/index.js";
 import ErrorHandlerMiddleware from "./middleware/ErrorHandlerMiddleware.js";
 
-console.log('DB_DIALECT:', process.env.DB_DIALECT);
-
 const PORT = process.env.PORT
-
 const app = express();
 app.use(cors());
 app.use(express.json());

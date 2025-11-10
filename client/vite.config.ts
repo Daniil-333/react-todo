@@ -5,7 +5,6 @@ import * as process from "node:process";
 // https://vite.dev/config/
 export default defineConfig(({mode}) => {
     const env = loadEnv(mode, process.cwd(), '');
-    const isDev = mode === 'development';
 
     return {
         define: {
@@ -16,16 +15,13 @@ export default defineConfig(({mode}) => {
         },
         plugins: [
             react({
-                babel: isDev ? {
+                babel: {
                     plugins: [['babel-plugin-react-compiler']],
-                } : undefined,
+                },
             }),
         ],
-        esbuild: false,
-        build: {
-            target: 'es2015',
-            minify: 'terser',
-            sourcemap: false,
-        }
+        optimizeDeps: {
+            include: ['@emotion/react', '@emotion/styled'],
+        },
     }
 })
