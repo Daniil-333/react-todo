@@ -21,13 +21,11 @@ export default defineConfig(({mode}) => {
                 } : undefined,
             }),
         ],
+        esbuild: false,
         build: {
-            target: 'esnext',
-            minify: false,
+            target: 'es2015',
+            minify: 'terser',
             sourcemap: false,
-            rollupOptions: {
-                plugins: []
-            }
         }
     }
 })
