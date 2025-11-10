@@ -19,9 +19,7 @@ if (fs.existsSync(envPath)) {
     console.log('Available files:', fs.readdirSync(process.cwd()));
 }
 
-console.log('DB_DIALECT:', process.env);
-
-// configDotenv();
+console.log('DB_DIALECT:', process.env.DB_DIALECT);
 
 const PORT = process.env.PORT
 

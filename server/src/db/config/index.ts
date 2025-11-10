@@ -15,6 +15,8 @@ export interface DatabaseConfig {
 const getConfig = (): DatabaseConfig => {
     const isProduction = process.env.NODE_ENV === 'production';
 
+    console.log(isProduction)
+
     const baseConfig = {
         database: process.env.DB_NAME as string,
         username: process.env.DB_USERNAME as string,
@@ -40,4 +42,5 @@ const getConfig = (): DatabaseConfig => {
 };
 
 export const dbConfig = getConfig();
+console.log(dbConfig);
 export default new Sequelize(dbConfig);
