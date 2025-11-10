@@ -8,3 +8,8 @@ node_modules/
 .idea/
 .env
 db.sqlite
+index.html
+assets/
+/client/package-lock.json
+/server/package-lock.json
+.htaccess
