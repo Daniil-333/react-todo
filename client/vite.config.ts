@@ -23,8 +23,11 @@ export default defineConfig(({mode}) => {
         ],
         build: {
             target: 'esnext',
-            minify: 'esbuild',
-            sourcemap: false
+            minify: false,
+            sourcemap: false,
+            rollupOptions: {
+                plugins: []
+            }
         }
     }
 })
