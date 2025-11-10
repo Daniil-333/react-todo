@@ -1,4 +1,4 @@
-import sequelize from "../db/index.js";
+import {getSequelize} from "../db/config/index.js";
 import {
     DataTypes,
 } from "sequelize";
@@ -7,6 +7,7 @@ import {statusOptions} from "../const/types/status.js";
 import {roleOptions} from "../const/types/role.js";
 import {User, Task} from '../const/classes.js';
 
+const sequelize = getSequelize();
 
 User.init({
         id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},

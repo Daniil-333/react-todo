@@ -1,6 +1,8 @@
-import sequelize from './config/index.js';
+import {getSequelize} from './config/index.js';
+// import {Sequelize} from "sequelize";
 
-// Тестируем подключение
+const sequelize = getSequelize();
+
 export const initializeDatabase = async () => {
     try {
         await sequelize.authenticate();
@@ -14,5 +16,3 @@ export const initializeDatabase = async () => {
         process.exit(1);
     }
 };
-
-export default sequelize;

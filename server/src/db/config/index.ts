@@ -1,6 +1,8 @@
 import { Sequelize, Dialect } from 'sequelize';
 import path from 'path';
 
+let sequelizeInstance: Sequelize | null = null;
+
 export interface DatabaseConfig {
     database: string;
     username: string;
@@ -41,6 +43,13 @@ const getConfig = (): DatabaseConfig => {
     };
 };
 
-export const dbConfig = getConfig();
-console.log(dbConfig);
-export default new Sequelize(dbConfig);
+export const getSequelize = () => {
+    if(!sequelizeInstance) {
+        const config = getConfig();
+        console.log('🔍 Creating Sequelize with config:', config);
+        sequelizeInstance = new Sequelize(config);
+    }
+    return sequelizeInstance;
+}
+
+export default getSequelize;
